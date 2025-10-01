@@ -1,0 +1,45 @@
+name: AWS Auth Example
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/aws/**'
+      - 'tests/Avro.Aws.*.UnitTests/**'
+      - '.github/workflows/aws-auth-example.yml'
+
+env:
+  DOTNET_VERSION: 10.0.x
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: us-east-1
+
+    - name: Build
+      run: dotnet build src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj
+
+    - name: Test
+      run: dotnet test tests/Avro.Aws.Auth.UnitTests/Avro.Aws.Auth.UnitTests.csproj
+      env:
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}

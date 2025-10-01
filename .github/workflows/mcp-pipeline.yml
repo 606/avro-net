@@ -32,16 +32,18 @@ jobs:
         dotnet-quality: 'preview'
 
     - name: Restore dependencies
-      run: dotnet restore src/mcp
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build src/mcp --no-restore --configuration Release
+      run: dotnet build --no-restore --configuration Release
 
     - name: Upload MCP server artifact
       uses: actions/upload-artifact@v4
       with:
         name: mcp-server-artifacts
-        path: src/mcp/Avro.Mcp.Example/bin/Release/net10.0/
+        path: |
+          **/bin/Release/net10.0/Avro.Mcp.Example*
+          **/bin/Release/Avro.Mcp.*.nupkg
 
   test:
     needs: build
@@ -56,16 +58,13 @@ jobs:
         dotnet-quality: 'preview'
 
     - name: Restore dependencies
-      run: |
-        dotnet restore src/mcp
-        dotnet restore tests/Avro.Mcp.*.UnitTests
-        dotnet restore tests/Avro.Mcp.*.IntegrationTests
+      run: dotnet restore
 
     - name: Run Unit Tests
-      run: dotnet test tests/Avro.Mcp.*.UnitTests --configuration Release --verbosity normal
+      run: dotnet test --filter "FullyQualifiedName~Avro.Mcp" --configuration Release --verbosity normal --logger trx
 
     - name: Run Integration Tests
-      run: dotnet test tests/Avro.Mcp.*.IntegrationTests --configuration Release --verbosity normal
+      run: dotnet test --filter "FullyQualifiedName~Avro.Mcp.Example.IntegrationTests" --configuration Release --verbosity normal --logger trx
 
   deploy:
     needs: test
@@ -87,7 +86,7 @@ jobs:
         path: artifacts
 
     - name: Pack NuGet packages
-      run: dotnet pack src/mcp --configuration Release --output ./nupkg --no-build
+      run: dotnet pack src/mcp/Avro.Mcp.Example --configuration Release --output ./nupkg --no-build
 
     - name: Push NuGet packages
       run: |

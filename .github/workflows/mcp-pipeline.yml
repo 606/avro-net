@@ -7,10 +7,12 @@ on:
       - 'src/mcp/**'
       - 'src/sdk/**'
       - '.github/workflows/mcp-pipeline.yml'
+      - '.github/workflows/terraform.yml'
       - 'tests/Avro.Mcp.*.UnitTests/**'
       - 'tests/Avro.Mcp.*.IntegrationTests/**'
       - 'Avro.sln'
       - 'Directory.*.props'
+      - 'infra/mcp/**'
   pull_request:
     branches: [ main ]
     paths:
@@ -154,8 +156,16 @@ jobs:
       run: |
         dotnet nuget push ./nupkg/*.nupkg --source github --skip-duplicate
 
+  terraform:
+    needs: build
+    uses: ./.github/workflows/terraform.yml
+    with:
+      working-directory: ./infra/mcp
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
   validate:
-    needs: deploy
+    needs: [deploy, terraform]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:

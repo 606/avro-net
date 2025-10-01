@@ -9,6 +9,7 @@ on:
       - '.github/workflows/sdk-pipeline.yml'
       - 'Avro.sln'
       - 'Directory.*.props'
+      - 'infra/**'
   pull_request:
     branches: [ main ]
     paths:
@@ -151,8 +152,16 @@ jobs:
       run: |
         dotnet nuget push ./nupkg/*.nupkg --source github --skip-duplicate
         
+  terraform:
+    needs: build
+    uses: ./.github/workflows/terraform.yml
+    with:
+      working-directory: ./infra
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
   validate:
-    needs: deploy
+    needs: [deploy, terraform]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:

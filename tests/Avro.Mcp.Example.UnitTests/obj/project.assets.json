@@ -1086,7 +1086,7 @@
           "build/net6.0/xunit.runner.visualstudio.props": {}
         }
       },
-      "Avro.Mcp.Example/1.0.0": {
+      "Avro.Mcp.Example/0.1.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
@@ -2664,7 +2664,7 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
-    "Avro.Mcp.Example/1.0.0": {
+    "Avro.Mcp.Example/0.1.0": {
       "type": "project",
       "path": "../../src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj",
       "msbuildProject": "../../src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj"
@@ -2682,7 +2682,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Avro.Mcp.Example >= 1.0.0",
+      "Avro.Mcp.Example >= 0.1.0",
       "Avro.Os.Abstractions >= 0.1.0",
       "Avro.Os.Identity >= 0.1.0",
       "Microsoft.AspNetCore.Mvc.Testing >= 10.0.0-preview.2.24128.4",

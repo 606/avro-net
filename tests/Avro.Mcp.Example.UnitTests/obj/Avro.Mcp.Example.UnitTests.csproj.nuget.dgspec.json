@@ -5,7 +5,7 @@
   },
   "projects": {
     "/Users/worze/avro/avro-net/src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj": {
-      "version": "1.0.0",
+      "version": "0.1.0",
       "restore": {
         "projectUniqueName": "/Users/worze/avro/avro-net/src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj",
         "projectName": "Avro.Mcp.Example",

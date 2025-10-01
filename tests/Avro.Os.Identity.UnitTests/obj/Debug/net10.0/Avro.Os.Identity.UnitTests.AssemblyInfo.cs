@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Avro.Os.Identity.UnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0b9e727a80d4894c365da2cb706f8ce25eb29f9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f729451f83c037d0a3b8e300af7a5f387dd7bdcc")]
 [assembly: System.Reflection.AssemblyProductAttribute("Avro.Os.Identity.UnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Avro.Os.Identity.UnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

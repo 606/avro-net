@@ -28,9 +28,9 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Avro.Mcp.Example.Pro
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
-        Assert.Contains("Type", content);
-        Assert.Contains("Version", content);
-        Assert.Contains("Architecture", content);
+        Assert.Contains("type", content);
+        Assert.Contains("version", content);
+        Assert.Contains("architecture", content);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Avro.Mcp.Example.Pro
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
-        Assert.Contains("Architecture", content);
+        Assert.Contains("architecture", content);
     }
 
     [Fact]

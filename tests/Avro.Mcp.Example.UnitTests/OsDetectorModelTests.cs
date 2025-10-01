@@ -27,13 +27,13 @@ public class OperatingSystemControllerTests
         
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(200, result?.StatusCode);
+        Assert.Equal(200, result.StatusCode);
+        Assert.NotNull(result.Value);
         
-        if (result?.Value is object value)
-        {
-            dynamic resultValue = value;
-            Assert.Equal("Linux", resultValue.Type.ToString());
-        }
+        // Convert to JSON string to validate structure
+        var json = System.Text.Json.JsonSerializer.Serialize(result.Value);
+        Assert.Contains("Type", json);
+        Assert.Contains("Linux", json);
     }
     
     [Fact]

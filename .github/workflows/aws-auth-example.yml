@@ -34,9 +34,7 @@ jobs:
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         aws-region: eu-central-1
-        role-duration-seconds: 900
         role-session-name: GithubActionsAvroNet-${{ github.run_id }}
-        mask-aws-account-id: true
 
     - name: Build
       run: dotnet build src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj

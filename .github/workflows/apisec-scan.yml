@@ -51,9 +51,7 @@ jobs:
       uses: trufflesecurity/trufflehog@v3.90.8
       with:
         path: ./
-        base: main
-        head: HEAD
-        extra_args: --debug --only-verified
+        extra_args: --debug --only-verified --no-update --no-history
 
   dependency-scan:
     name: Dependency Security Scan

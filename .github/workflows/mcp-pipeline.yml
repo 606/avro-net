@@ -5,16 +5,22 @@ on:
     branches: [ main ]
     paths:
       - 'src/mcp/**'
+      - 'src/sdk/**'
       - '.github/workflows/mcp-pipeline.yml'
       - 'tests/Avro.Mcp.*.UnitTests/**'
       - 'tests/Avro.Mcp.*.IntegrationTests/**'
+      - 'Avro.sln'
+      - 'Directory.*.props'
   pull_request:
     branches: [ main ]
     paths:
       - 'src/mcp/**'
+      - 'src/sdk/**'
       - '.github/workflows/mcp-pipeline.yml'
       - 'tests/Avro.Mcp.*.UnitTests/**'
       - 'tests/Avro.Mcp.*.IntegrationTests/**'
+      - 'Avro.sln'
+      - 'Directory.*.props'
   workflow_dispatch:
 
 jobs:
@@ -79,10 +85,14 @@ jobs:
         dotnet-version: '10.0.x'
         dotnet-quality: 'preview'
 
+    - name: Restore dependencies
+      run: dotnet restore
+
     - name: Pack NuGet packages
       run: dotnet pack src/mcp/Avro.Mcp.Example --configuration Release --output ./nupkg
 
     - name: Push NuGet packages
+      if: ${{ secrets.NUGET_API_KEY != '' }}
       run: |
         dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
       env:

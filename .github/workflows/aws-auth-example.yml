@@ -32,9 +32,10 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/606v2-role
         aws-region: eu-central-1
         role-session-name: GithubActionsAvroNet-${{ github.run_id }}
+        audience: sts.amazonaws.com
 
     - name: Build
       run: dotnet build src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj

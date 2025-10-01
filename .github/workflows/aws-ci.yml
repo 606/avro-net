@@ -40,7 +40,9 @@ jobs:
       run: dotnet build --no-restore --configuration Release
       
     - name: Test
-      run: dotnet test --no-build --configuration Release --verbosity normal src/aws/*/Avro.Aws.*.csproj tests/Avro.Aws.*/Avro.Aws.*.UnitTests.csproj
+      run: |
+        dotnet test tests/Avro.Aws.Abstractions.UnitTests/Avro.Aws.Abstractions.UnitTests.csproj --no-build --configuration Release --verbosity normal
+        dotnet test tests/Avro.Aws.Auth.UnitTests/Avro.Aws.Auth.UnitTests.csproj --no-build --configuration Release --verbosity normal
 
   package:
     needs: build
@@ -60,8 +62,8 @@ jobs:
         
     - name: Pack
       run: |
-        dotnet pack src/aws/Avro.Aws.Abstractions/Avro.Aws.Abstractions.csproj -c Release --no-build --output nupkgs
-        dotnet pack src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj -c Release --no-build --output nupkgs
+        dotnet pack src/aws/Avro.Aws.Abstractions/Avro.Aws.Abstractions.csproj -c Release --output nupkgs
+        dotnet pack src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj -c Release --output nupkgs
         
     - name: Push to NuGet
       run: dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

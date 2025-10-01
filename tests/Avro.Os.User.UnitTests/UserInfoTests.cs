@@ -1,4 +1,4 @@
-namespace Avro.Os.UserInfo.UnitTests;
+namespace Avro.Os.User.UnitTests;
 
 public class UserInfoTests
 {

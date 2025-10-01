@@ -1,6 +1,6 @@
 using Avro.Os.Identity;
 
-namespace Avro.Os.UserInfo.UnitTests;
+namespace Avro.Os.User.UnitTests;
 
 public class UserInfoProviderTests
 {

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Identity", "src\sdk\Avro.Os.Identity\Avro.Os.Identity.csproj", "{11111111-2222-3333-4444-555555555555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.UserInfo", "src\sdk\Avro.Os.UserInfo\Avro.Os.UserInfo.csproj", "{55555555-6666-7777-8888-999999999999}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User", "src\sdk\Avro.Os.User\Avro.Os.User.csproj", "{55555555-6666-7777-8888-999999999999}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions.UnitTests", "tests\Avro.Os.Abstractions.UnitTests\Avro.Os.Abstractions.UnitTests.csproj", "{33333333-4444-5555-6666-777777777777}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.UnitTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.IntegrationTests", "tests\Avro.Mcp.Example.IntegrationTests\Avro.Mcp.Example.IntegrationTests.csproj", "{B1417F9C-BC23-46DF-8DBE-28545AA04FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.UserInfo.UnitTests", "tests\Avro.Os.UserInfo.UnitTests\Avro.Os.UserInfo.UnitTests.csproj", "{66666666-7777-8888-9999-AAAAAAAAAAAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User.UnitTests", "tests\Avro.Os.User.UnitTests\Avro.Os.User.UnitTests.csproj", "{66666666-7777-8888-9999-AAAAAAAAAAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/sdk/Avro.Os.UserInfo/Avro.Os.UserInfo.csproj" />
+    <ProjectReference Include="../../src/sdk/Avro.Os.User/Avro.Os.User.csproj" />
     <ProjectReference Include="../../src/sdk/Avro.Os.Abstractions/Avro.Os.Abstractions.csproj" />
   </ItemGroup>
 

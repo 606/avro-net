@@ -1,12 +1,12 @@
-namespace Avro.Os.UserInfo.UnitTests;
+namespace Avro.Os.User.UnitTests;
 
-public class OsUserInfoTests
+public class OsUserTests
 {
     [Fact]
     public void GetCurrentUser_ReturnsUserInfo()
     {
         // Act
-        var currentUser = OsUserInfo.GetCurrentUser();
+        var currentUser = OsUser.GetCurrentUser();
 
         // Assert
         currentUser.Should().NotBeNull();
@@ -17,7 +17,7 @@ public class OsUserInfoTests
     public void GetCurrentUsername_ReturnsNonEmptyString()
     {
         // Act
-        var username = OsUserInfo.GetCurrentUsername();
+        var username = OsUser.GetCurrentUsername();
 
         // Assert
         username.Should().NotBeNullOrEmpty();
@@ -27,29 +27,29 @@ public class OsUserInfoTests
     public void GetCurrentUserHomeDirectory_ReturnsString()
     {
         // Act
-        var homeDirectory = OsUserInfo.GetCurrentUserHomeDirectory();
+        var homeDirectory = OsUser.GetCurrentUserHomeDirectory();
 
         // Assert
         // Home directory might be null on some systems, so we just check it's not throwing
-        Assert.True(true); // If we get here without exception, the test passes
+        // If we get here without exception, the test passes
     }
 
     [Fact]
     public void GetCurrentUserFullName_ReturnsString()
     {
         // Act
-        var fullName = OsUserInfo.GetCurrentUserFullName();
+        var fullName = OsUser.GetCurrentUserFullName();
 
         // Assert
         // Full name might be null on some systems, so we just check it's not throwing
-        Assert.True(true); // If we get here without exception, the test passes
+        // If we get here without exception, the test passes
     }
 
     [Fact]
     public void IsCurrentUserAdministrator_ReturnsBool()
     {
         // Act
-        var isAdmin = OsUserInfo.IsCurrentUserAdministrator();
+        var isAdmin = OsUser.IsCurrentUserAdministrator();
 
         // Assert
         // Just check that it doesn't throw - the method should return a boolean
@@ -60,7 +60,7 @@ public class OsUserInfoTests
     public void GetAllUsers_ReturnsCollection()
     {
         // Act
-        var users = OsUserInfo.GetAllUsers();
+        var users = OsUser.GetAllUsers();
 
         // Assert
         users.Should().NotBeNull();
@@ -72,7 +72,7 @@ public class OsUserInfoTests
     public void GetUser_WithNonExistentUser_ReturnsNull(string username)
     {
         // Act
-        var user = OsUserInfo.GetUser(username);
+        var user = OsUser.GetUser(username);
 
         // Assert
         // Most likely returns null for non-existent users
@@ -84,10 +84,10 @@ public class OsUserInfoTests
     public void GetUser_WithCurrentUsername_ReturnsUserInfo()
     {
         // Arrange
-        var currentUsername = OsUserInfo.GetCurrentUsername();
+        var currentUsername = OsUser.GetCurrentUsername();
 
         // Act
-        var user = OsUserInfo.GetUser(currentUsername);
+        var user = OsUser.GetUser(currentUsername);
 
         // Assert
         // Should be able to find the current user
@@ -102,10 +102,10 @@ public class OsUserInfoTests
     public void StaticMethods_UseConsistentProvider()
     {
         // Act
-        var user1 = OsUserInfo.GetCurrentUser();
-        var user2 = OsUserInfo.GetCurrentUser();
-        var username1 = OsUserInfo.GetCurrentUsername();
-        var username2 = OsUserInfo.GetCurrentUsername();
+        var user1 = OsUser.GetCurrentUser();
+        var user2 = OsUser.GetCurrentUser();
+        var username1 = OsUser.GetCurrentUsername();
+        var username2 = OsUser.GetCurrentUsername();
 
         // Assert
         user1.Username.Should().Be(user2.Username);

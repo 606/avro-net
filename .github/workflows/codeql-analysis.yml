@@ -1,4 +1,4 @@
-name: "CodeQL C# Analysis"
+name: "CodeQL Analysis"
 
 on:
   push:

@@ -110,6 +110,7 @@ jobs:
       run: |
         dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg --no-build
         dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg --no-build
+        dotnet pack src/sdk/Avro.Os.User --configuration Release --output ./nupkg --no-build
 
     - name: List packaged files
       run: ls -la ./nupkg/
@@ -184,10 +185,18 @@ jobs:
           dotnet add package Avro.Os.Identity --prerelease
         }
         
+        echo "Attempting to install Avro.Os.User..."
+        dotnet add package Avro.Os.User --prerelease || {
+          echo "Failed to install Avro.Os.User. Retrying in 30 seconds..."
+          sleep 30
+          dotnet add package Avro.Os.User --prerelease
+        }
+        
         echo "Creating validation code..."
         cat > Program.cs << 'EOF'
         using Avro.Os.Abstractions;
         using Avro.Os.Identity;
+        using Avro.Os.User;
         
         var detector = new OsIdentity();
         var osInfo = new OperatingSystemInfo(detector);
@@ -196,6 +205,12 @@ jobs:
         Console.WriteLine($"OS Type: {osInfo.Type}");
         Console.WriteLine($"OS Version: {osInfo.Version}");
         Console.WriteLine($"Architecture: {osInfo.Architecture}");
+        
+        var currentUser = OsUser.GetCurrentUser();
+        Console.WriteLine($"✅ User Info Validation Successful!");
+        Console.WriteLine($"Username: {currentUser.Username}");
+        Console.WriteLine($"Home Directory: {currentUser.HomeDirectory}");
+        Console.WriteLine($"Is Administrator: {currentUser.IsAdministrator}");
         
         Console.WriteLine($"\n📦 Package validation completed successfully!");
         EOF

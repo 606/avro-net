@@ -12,6 +12,18 @@ provider "github" {
   owner = var.github_owner
 }
 
+# Configure NuGet package publishing secrets
+resource "github_actions_secret" "nuget_secrets" {
+  for_each = {
+    NUGET_API_KEY = var.nuget_api_key
+    GITHUB_TOKEN  = var.github_token
+  }
+
+  repository      = var.repository_name
+  secret_name     = each.key
+  encrypted_value = each.value
+}
+
 # Configure repository settings
 resource "github_repository" "sdk" {
   name        = var.repository_name

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- NuGet Package Configuration -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Avro.Os.UserInfo</PackageId>
+    <PackageVersion>0.0.1</PackageVersion>
+    <Authors>Avro</Authors>
+    <Company>Avro</Company>
+    <Product>Avro OS User Information</Product>
+    <Description>Cross-platform library for retrieving system user information in the Avro ecosystem. Provides comprehensive user details including username, full name, home directory, administrative privileges, and platform-specific information.</Description>
+    <PackageTags>avro;os;user;system;userinfo;cross-platform;windows;linux;macos</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/606/avro-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/606/avro-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Avro.Os.Abstractions/Avro.Os.Abstractions.csproj" />
+    <ProjectReference Include="../Avro.Os.Identity/Avro.Os.Identity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

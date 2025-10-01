@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- AWS Packages -->
+    <PackageVersion Include="AWSSDK.SecurityToken" Version="3.7.300.2" />
+    
     <!-- ASP.NET Packages -->
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.0-preview.2.24128.4" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />

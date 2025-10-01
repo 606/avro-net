@@ -1,0 +1,49 @@
+name: AWS Auth Example
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+
+env:
+  DOTNET_VERSION: 10.0.x
+  AWS_REGION: eu-central-1
+  AWS_DEFAULT_REGION: eu-central-1
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-606-role
+        aws-region: eu-central-1
+        role-session-name: GithubActionsAvroNet-${{ github.run_id }}
+        audience: sts.amazonaws.com
+        output-env-credentials: true
+
+    - name: Build
+      run: dotnet build src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj
+
+    - name: Test
+      run: dotnet test tests/Avro.Aws.Auth.UnitTests/Avro.Aws.Auth.UnitTests.csproj
+      env:
+        AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ env.AWS_SESSION_TOKEN }}

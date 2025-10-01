@@ -9,7 +9,6 @@ on:
       - '.github/workflows/sdk-pipeline.yml'
       - 'Avro.sln'
       - 'Directory.*.props'
-      - 'infra/**'
   pull_request:
     branches: [ main ]
     paths:
@@ -190,16 +189,8 @@ jobs:
           ./nupkg/*.verification
           ./nupkg/*.sha256
         
-  terraform:
-    needs: build
-    uses: ./.github/workflows/terraform.yml
-    with:
-      working-directory: ./infra
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
   validate:
-    needs: [deploy, terraform]
+    needs: deploy
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:

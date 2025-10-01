@@ -25,9 +25,9 @@ resource "github_actions_secret" "mcp_secrets" {
 }
 
 # Set up branch protection specific to MCP
-resource "github_branch_protection_v3" "mcp_protection" {
-  repository     = var.repository_name
-  branch         = "main"
+resource "github_branch_protection" "mcp_protection" {
+  repository_id = var.repository_name
+  pattern       = "main"
   enforce_admins = true
 
   required_status_checks {
@@ -40,5 +40,6 @@ resource "github_branch_protection_v3" "mcp_protection" {
     dismiss_stale_reviews          = true
   }
 
-  restrictions = null
+  allows_deletions = false
+  allows_force_pushes = false
 }

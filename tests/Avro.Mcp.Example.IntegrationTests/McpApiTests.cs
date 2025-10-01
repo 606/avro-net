@@ -26,8 +26,11 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Avro.Mcp.Example.Pro
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadFromJsonAsync<dynamic>();
+        var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
+        Assert.Contains("Type", content);
+        Assert.Contains("Version", content);
+        Assert.Contains("Architecture", content);
     }
 
     [Fact]
@@ -41,9 +44,9 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Avro.Mcp.Example.Pro
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadFromJsonAsync<dynamic>();
+        var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
-        Assert.NotNull(content.Architecture);
+        Assert.Contains("Architecture", content);
     }
 
     [Fact]
@@ -72,7 +75,9 @@ public class ApiTests : IClassFixture<WebApplicationFactory<Avro.Mcp.Example.Pro
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadFromJsonAsync<dynamic>();
+        var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
+        Assert.Contains("choices", content);
+        Assert.Contains("message", content);
     }
 }

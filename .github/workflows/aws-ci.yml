@@ -14,9 +14,16 @@ on:
       - 'tests/Avro.Aws.*/**'
       - '.github/workflows/aws-ci.yml'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     
     steps:
     - uses: actions/checkout@v4
@@ -39,6 +46,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
     
     steps:
     - uses: actions/checkout@v4

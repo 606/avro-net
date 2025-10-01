@@ -94,8 +94,14 @@ jobs:
     - name: Build projects
       run: dotnet build --configuration Release --no-restore
 
+    - name: Create output directory
+      run: mkdir -p ./nupkg
+
     - name: Pack NuGet packages
       run: dotnet pack src/mcp/Avro.Mcp.Example --configuration Release --output ./nupkg --no-build
+
+    - name: List packaged files
+      run: ls -la ./nupkg/
 
     - name: Add GitHub Package Registry source
       run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
@@ -103,3 +109,39 @@ jobs:
     - name: Push NuGet packages to GitHub
       run: |
         dotnet nuget push ./nupkg/*.nupkg --source github --skip-duplicate
+
+  validate:
+    needs: deploy
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+        
+    - name: Add GitHub Package Registry source
+      run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
+      
+    - name: Wait for package propagation
+      run: sleep 30
+      
+    - name: Validate MCP packages from GitHub Registry
+      run: |
+        echo "Creating MCP validation project..."
+        dotnet new web -o McpValidationApp
+        cd McpValidationApp
+        
+        echo "Installing MCP package from GitHub Package Registry..."
+        dotnet add package Avro.Mcp.Example --source github --prerelease
+        
+        echo "Installing dependencies..."
+        dotnet add package Avro.Os.Abstractions --source github --prerelease
+        dotnet add package Avro.Os.Identity --source github --prerelease
+        
+        echo "✅ MCP Package validation completed successfully!"
+        echo "📦 All packages installed from GitHub Package Registry"

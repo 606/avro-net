@@ -84,10 +84,16 @@ jobs:
     - name: Build projects
       run: dotnet build --configuration Release --no-restore
 
+    - name: Create output directory
+      run: mkdir -p ./nupkg
+
     - name: Pack NuGet packages
       run: |
         dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg --no-build
         dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg --no-build
+
+    - name: List packaged files
+      run: ls -la ./nupkg/
 
     - name: Add GitHub Package Registry source
       run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
@@ -100,25 +106,47 @@ jobs:
     needs: deploy
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
-    - uses: actions/checkout@v4
-      with:
-        repository: 'avro/avro-sdk-validation'
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'
         dotnet-quality: 'preview'
         
-    - name: Add NuGet source
-      run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+    - name: Add GitHub Package Registry source
+      run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
       
-    - name: Validate SDK packages
+    - name: Wait for package propagation
+      run: sleep 30
+      
+    - name: Validate SDK packages from GitHub Registry
       run: |
+        echo "Creating validation project..."
         dotnet new console -o ValidationApp
         cd ValidationApp
-        dotnet add package Avro.Os.Identity
-        dotnet add package Avro.Os.Abstractions
+        
+        echo "Installing packages from GitHub Package Registry..."
+        dotnet add package Avro.Os.Abstractions --source github --prerelease
+        dotnet add package Avro.Os.Identity --source github --prerelease
+        
+        echo "Creating validation code..."
+        cat > Program.cs << 'EOF'
+        using Avro.Os.Abstractions;
+        using Avro.Os.Identity;
+        
+        var detector = new OsIdentity();
+        var osInfo = new OperatingSystemInfo(detector);
+        
+        Console.WriteLine($"✅ OS Detection Validation Successful!");
+        Console.WriteLine($"OS Type: {osInfo.Type}");
+        Console.WriteLine($"OS Version: {osInfo.Version}");
+        Console.WriteLine($"Architecture: {osInfo.Architecture}");
+        
+        Console.WriteLine($"\n📦 Package validation completed successfully!");
+        EOF
+        
+        echo "Running validation..."
         dotnet run

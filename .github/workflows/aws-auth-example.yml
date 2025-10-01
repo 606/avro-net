@@ -16,6 +16,7 @@ env:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       id-token: write
       contents: read

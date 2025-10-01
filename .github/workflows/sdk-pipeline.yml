@@ -69,7 +69,12 @@ jobs:
 
     - name: Build
       working-directory: ${{ github.workspace }}
-      run: dotnet build --no-restore --configuration Release
+      run: |
+        # Generate complete build information for better analysis
+        dotnet build --no-restore --configuration Release /p:UseSharedCompilation=false /p:DebugType=Full
+        
+        # Create a list of all dlls for analysis
+        find . -name "*.dll" -not -path "*/obj/*" -not -path "*/bin/Debug/*" > compile_commands.json
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

@@ -1,0 +1,32 @@
+name: "C# CodeQL Configuration"
+
+queries:
+  - uses: security-and-quality
+
+query-filters:
+  - exclude:
+      problem.severity:
+        - warning
+        - recommendation
+
+paths-ignore:
+  - '**/obj/**'
+  - '**/bin/**'
+  - '**/Tests/**'
+  - '**/*.Test/**'
+  - '**/*.Tests/**'
+  - '**/TestResults/**'
+  - 'tools/**'
+
+extraction:
+  csharp:
+    prepare:
+      packages:
+        - dotnet-sdk-10.0
+    after_prepare:
+      - export PATH="$PATH:/usr/share/dotnet"
+    index:
+      buildless: false
+      build_command:
+        - dotnet restore
+        - dotnet build --configuration Release /p:UseSharedCompilation=false /p:DebugType=Full

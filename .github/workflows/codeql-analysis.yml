@@ -57,7 +57,7 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         config-file: .github/codeql/codeql-config.yml
-        queries: security-and-quality
+        setup-python-dependencies: false
 
     - name: Clear NuGet cache
       run: dotnet nuget locals all --clear

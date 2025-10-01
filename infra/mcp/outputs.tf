@@ -4,6 +4,6 @@ output "configured_secrets" {
 }
 
 output "branch_protection_status" {
-  value       = github_branch_protection_v3.mcp_protection.enforce_admins
+  value       = github_branch_protection.mcp_protection.enforce_admins
   description = "Status of branch protection rules"
 }

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute(("Operating system detection and identity functionality for the Avro ecosystem. Det" +
     "ermines if the current OS is macOS, Linux, or Windows."))]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f729451f83c037d0a3b8e300af7a5f387dd7bdcc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f636a75a2711e430300d8aee10b440c4b506050d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Avro OS Identity")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Avro.Os.Identity")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

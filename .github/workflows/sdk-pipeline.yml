@@ -116,8 +116,13 @@ jobs:
         dotnet-version: '10.0.x'
         dotnet-quality: 'preview'
         
+    - name: Clear NuGet cache
+      run: dotnet nuget locals all --clear
+      
     - name: Add GitHub Package Registry source
-      run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
+      run: |
+        dotnet nuget remove source github || echo "Source not found, continuing..."
+        dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
       
     - name: Wait for package propagation
       run: sleep 60
@@ -128,22 +133,36 @@ jobs:
         dotnet new console -o ValidationApp
         cd ValidationApp
         
-        echo "Searching for available packages..."
-        dotnet nuget search Avro.Os --source github --prerelease || echo "Search may not be available"
+        echo "Configuring NuGet.config for GitHub Package Registry..."
+        cat > nuget.config << EOF
+        <?xml version="1.0" encoding="utf-8"?>
+        <configuration>
+          <packageSources>
+            <add key="github" value="https://nuget.pkg.github.com/606/index.json" />
+            <add key="nuget" value="https://api.nuget.org/v3/index.json" />
+          </packageSources>
+          <packageSourceCredentials>
+            <github>
+              <add key="Username" value="606" />
+              <add key="ClearTextPassword" value="${{ secrets.GITHUB_TOKEN }}" />
+            </github>
+          </packageSourceCredentials>
+        </configuration>
+        EOF
         
         echo "Installing packages from GitHub Package Registry..."
         echo "Attempting to install Avro.Os.Abstractions..."
-        dotnet add package Avro.Os.Abstractions --source github --prerelease || {
+        dotnet add package Avro.Os.Abstractions --prerelease || {
           echo "Failed to install Avro.Os.Abstractions. Retrying in 30 seconds..."
           sleep 30
-          dotnet add package Avro.Os.Abstractions --source github --prerelease
+          dotnet add package Avro.Os.Abstractions --prerelease
         }
         
         echo "Attempting to install Avro.Os.Identity..."
-        dotnet add package Avro.Os.Identity --source github --prerelease || {
+        dotnet add package Avro.Os.Identity --prerelease || {
           echo "Failed to install Avro.Os.Identity. Retrying in 30 seconds..."
           sleep 30
-          dotnet add package Avro.Os.Identity --source github --prerelease
+          dotnet add package Avro.Os.Identity --prerelease
         }
         
         echo "Creating validation code..."

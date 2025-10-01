@@ -66,8 +66,9 @@ jobs:
     needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    env:
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    permissions:
+      contents: read
+      packages: write
     steps:
     - uses: actions/checkout@v4
 
@@ -80,15 +81,20 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: Build projects
+      run: dotnet build --configuration Release --no-restore
+
     - name: Pack NuGet packages
       run: |
-        dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg
-        dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg
+        dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg --no-build
+        dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg --no-build
 
-    - name: Push NuGet packages
-      if: env.NUGET_API_KEY != ''
+    - name: Add GitHub Package Registry source
+      run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
+
+    - name: Push NuGet packages to GitHub
       run: |
-        dotnet nuget push ./nupkg/*.nupkg --api-key ${{ env.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        dotnet nuget push ./nupkg/*.nupkg --source github --skip-duplicate
         
   validate:
     needs: deploy

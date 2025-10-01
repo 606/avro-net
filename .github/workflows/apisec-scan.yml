@@ -1,5 +1,12 @@
 name: API Security Scan
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  checks: write
+  pull-requests: write
+
 on:
   push:
     branches: [ main, develop ]
@@ -179,6 +186,9 @@ jobs:
   security-headers-check:
     name: Security Headers Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     if: github.event.inputs.scan_type == 'full' || github.event.inputs.scan_type == ''
     steps:
     - name: Checkout code
@@ -254,6 +264,10 @@ jobs:
   report-summary:
     name: Security Scan Summary
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     needs: [secret-scan, dependency-scan, api-security-test, security-headers-check]
     if: always()
     steps:

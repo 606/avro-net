@@ -3,31 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions", "src\sdk\Avro.Os.Abstractions\Avro.Os.Abstractions.csproj", "{22222222-3333-4444-5555-666666666666}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions", "src/sdk/Avro.Os.Abstractions/Avro.Os.Abstractions.csproj", "{22222222-3333-4444-5555-666666666666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Identity", "src\sdk\Avro.Os.Identity\Avro.Os.Identity.csproj", "{11111111-2222-3333-4444-555555555555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Identity", "src/sdk/Avro.Os.Identity/Avro.Os.Identity.csproj", "{11111111-2222-3333-4444-555555555555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User", "src\sdk\Avro.Os.User\Avro.Os.User.csproj", "{55555555-6666-7777-8888-999999999999}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User", "src/sdk/Avro.Os.User/Avro.Os.User.csproj", "{55555555-6666-7777-8888-999999999999}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions.UnitTests", "tests\Avro.Os.Abstractions.UnitTests\Avro.Os.Abstractions.UnitTests.csproj", "{33333333-4444-5555-6666-777777777777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Abstractions.UnitTests", "tests/Avro.Os.Abstractions.UnitTests/Avro.Os.Abstractions.UnitTests.csproj", "{33333333-4444-5555-6666-777777777777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Identity.UnitTests", "tests\Avro.Os.Identity.UnitTests\Avro.Os.Identity.UnitTests.csproj", "{44444444-5555-6666-7777-888888888888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.Identity.UnitTests", "tests/Avro.Os.Identity.UnitTests/Avro.Os.Identity.UnitTests.csproj", "{44444444-5555-6666-7777-888888888888}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mcp", "mcp", "{F3846736-565B-9EA7-873C-5ACF842A7768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example", "src\mcp\Avro.Mcp.Example\Avro.Mcp.Example.csproj", "{8DCA56FB-50E1-4CF8-A92B-120993BBEB36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example", "src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj", "{8DCA56FB-50E1-4CF8-A92B-120993BBEB36}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{51B637F8-9C04-5803-F48E-8CB9352021B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.UnitTests", "tests\Avro.Mcp.Example.UnitTests\Avro.Mcp.Example.UnitTests.csproj", "{7E1D3DEC-8BBE-4540-8C65-BBE9595DA7CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.UnitTests", "tests/Avro.Mcp.Example.UnitTests/Avro.Mcp.Example.UnitTests.csproj", "{7E1D3DEC-8BBE-4540-8C65-BBE9595DA7CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.IntegrationTests", "tests\Avro.Mcp.Example.IntegrationTests\Avro.Mcp.Example.IntegrationTests.csproj", "{B1417F9C-BC23-46DF-8DBE-28545AA04FCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Mcp.Example.IntegrationTests", "tests/Avro.Mcp.Example.IntegrationTests/Avro.Mcp.Example.IntegrationTests.csproj", "{B1417F9C-BC23-46DF-8DBE-28545AA04FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User.UnitTests", "tests\Avro.Os.User.UnitTests\Avro.Os.User.UnitTests.csproj", "{66666666-7777-8888-9999-AAAAAAAAAAAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avro.Os.User.UnitTests", "tests/Avro.Os.User.UnitTests/Avro.Os.User.UnitTests.csproj", "{66666666-7777-8888-9999-AAAAAAAAAAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

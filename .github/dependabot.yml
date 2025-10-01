@@ -13,31 +13,9 @@ updates:
       - "606"
     commit-message:
       prefix: "deps"
-      prefix-development: "deps-dev"
       include: "scope"
     labels:
       - "dependencies"
-      - "automerge"
-    ignore:
-      # Ignore major version updates for .NET runtime
-      - dependency-name: "Microsoft.NETCore.App"
-        update-types: ["version-update:semver-major"]
-      # Ignore major version updates for ASP.NET Core
-      - dependency-name: "Microsoft.AspNetCore.App"
-        update-types: ["version-update:semver-major"]
-    groups:
-      # Group Microsoft packages together
-      microsoft-packages:
-        patterns:
-          - "Microsoft.*"
-          - "System.*"
-      # Group test packages together
-      test-packages:
-        patterns:
-          - "xunit*"
-          - "Microsoft.NET.Test.Sdk"
-          - "coverlet.*"
-          - "Microsoft.AspNetCore.Mvc.Testing"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -54,24 +32,5 @@ updates:
       prefix: "ci"
       include: "scope"
     labels:
-      - "ci/cd"
       - "github-actions"
-      - "automerge"
 
-  # Enable version updates for Docker (if needed in future)
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00" 
-      timezone: "Etc/UTC"
-    open-pull-requests-limit: 5
-    assignees:
-      - "606"
-    commit-message:
-      prefix: "docker"
-      include: "scope"
-    labels:
-      - "docker"
-      - "automerge"

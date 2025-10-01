@@ -128,9 +128,9 @@ jobs:
 
     - name: Create GitHub Release
       if: steps.tag.outputs.new_tag
-      uses: ncipollo/create-release@v1
+      uses: softprops/action-gh-release@v2
       with:
-        tag: ${{ steps.tag.outputs.new_tag }}
+        tag_name: ${{ steps.tag.outputs.new_tag }}
         name: Release ${{ steps.tag.outputs.new_version }}
         body: |
           # 🚀 Release ${{ steps.tag.outputs.new_version }}
@@ -156,7 +156,7 @@ jobs:
           ```bash
           dotnet add package Avro.Os.Abstractions --source https://nuget.pkg.github.com/606/index.json --version ${{ steps.tag.outputs.new_version }}
           ```
-        artifacts: |
+        files: |
           ./release-packages/*.nupkg
           avro-net-${{ steps.tag.outputs.new_version }}.tar.gz
         draft: false

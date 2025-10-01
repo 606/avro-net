@@ -167,11 +167,12 @@ jobs:
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish to GitHub Package Registry
-      if: steps.tag.outputs.new_tag
-      run: |
-        dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
-        dotnet nuget push ./release-packages/*.nupkg --source github --skip-duplicate
+    - name: Archive Release packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-packages
+        path: ./release-packages/*.nupkg
+        retention-days: 90
         
   commit-version-updates:
     needs: release

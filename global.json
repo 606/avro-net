@@ -1,6 +1,7 @@
 {
   "sdk": {
-    "version": "10.0.100-rc.1"
-  },
-  "errorMessage": "The .NET SDK is not installed or is not configured correctly."
+    "version": "10.0.0-preview.2.24157.14",
+    "rollForward": "feature",
+    "allowPrerelease": true
+  }
 }

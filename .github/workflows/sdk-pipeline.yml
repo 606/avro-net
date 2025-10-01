@@ -138,21 +138,60 @@ jobs:
     - name: Create output directory
       run: mkdir -p ./nupkg
 
+    - name: Set Version
+      run: |
+        # Get commit count for versioning
+        COMMITS=$(git rev-list --count HEAD)
+        # Use semantic versioning with commit count
+        VERSION="1.0.$COMMITS-preview.${{ github.run_number }}"
+        echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+
     - name: Pack NuGet packages
       run: |
-        dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg --no-build
-        dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg --no-build
-        dotnet pack src/sdk/Avro.Os.User --configuration Release --output ./nupkg --no-build
+        # Add repository URL and commit hash to package metadata
+        COMMIT_SHA=$(git rev-parse --short HEAD)
+        COMMON_PROPS="/p:Version=${{ env.PACKAGE_VERSION }} \
+          /p:PackageVersion=${{ env.PACKAGE_VERSION }} \
+          /p:RepositoryUrl=https://github.com/606/avro-net \
+          /p:RepositoryCommit=$COMMIT_SHA \
+          /p:PackageProjectUrl=https://github.com/606/avro-net \
+          /p:PackageLicenseExpression=MIT"
 
-    - name: List packaged files
-      run: ls -la ./nupkg/
+        dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./nupkg --no-build $COMMON_PROPS
+        dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./nupkg --no-build $COMMON_PROPS
+        dotnet pack src/sdk/Avro.Os.User --configuration Release --output ./nupkg --no-build $COMMON_PROPS
 
-    - name: Add GitHub Package Registry source
-      run: dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
-
-    - name: Push NuGet packages to GitHub
+    - name: Generate Package Verification
       run: |
-        dotnet nuget push ./nupkg/*.nupkg --source github --skip-duplicate
+        for package in ./nupkg/*.nupkg; do
+          # Generate checksum
+          sha256sum "$package" > "${package}.sha256"
+          # Generate package verification metadata
+          echo "Package: $(basename "$package")" > "${package}.verification"
+          echo "Created: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> "${package}.verification"
+          echo "Commit: ${{ github.sha }}" >> "${package}.verification"
+          echo "Workflow: ${{ github.workflow }}" >> "${package}.verification"
+          echo "Build: ${{ github.run_number }}" >> "${package}.verification"
+          echo "SHA256: $(cat "${package}.sha256")" >> "${package}.verification"
+        done
+
+    - name: Push to GitHub Packages
+      run: |
+        dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
+        dotnet nuget push "./nupkg/*.nupkg" --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+
+    - name: Push to NuGet.org
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      run: |
+        dotnet nuget push "./nupkg/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+
+    - name: Upload Package Verification
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-verification
+        path: |
+          ./nupkg/*.verification
+          ./nupkg/*.sha256
         
   terraform:
     needs: build

@@ -10,8 +10,8 @@ on:
 
 env:
   DOTNET_VERSION: 10.0.x
-  AWS_REGION: us-east-1
-  AWS_DEFAULT_REGION: us-east-1
+  AWS_REGION: eu-central-1
+  AWS_DEFAULT_REGION: eu-central-1
 
 jobs:
   build-and-test:
@@ -33,7 +33,11 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-        aws-region: us-east-1
+        aws-region: eu-central-1
+        audience: sts.amazonaws.com
+        role-duration-seconds: 900
+        role-session-name: GithubActions-${{ github.run_id }}
+        mask-aws-account-id: true
 
     - name: Build
       run: dotnet build src/aws/Avro.Aws.Auth/Avro.Aws.Auth.csproj

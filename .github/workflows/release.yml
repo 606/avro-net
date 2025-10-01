@@ -72,7 +72,7 @@ jobs:
       if: steps.tag.outputs.new_tag
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: '10.0.100-rc.1.25451.107'
         dotnet-quality: 'preview'
 
     - name: Cache NuGet packages

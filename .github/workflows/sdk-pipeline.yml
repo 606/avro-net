@@ -42,7 +42,7 @@ jobs:
       with:
         dotnet-version: |
           8.0.x
-          10.0.x-preview
+          10.0.100-rc.1.25451.107
         include-prerelease: true
 
     - name: Cache NuGet packages
@@ -96,7 +96,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '10.0.100-rc.1'
+        dotnet-version: '10.0.100-rc.1.25451.107'
         dotnet-quality: 'preview'
 
     - name: Run Unit Tests

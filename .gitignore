@@ -1,0 +1,209 @@
+## .NET Core/.NET specific
+*.swp
+*.obj
+*.exe
+*.pdb
+*.user
+*.vscode
+*.vs
+*.suo
+*.tmp
+*.userprefs
+*.pidb
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+
+# .NET build and cache files
+*.Up2Date
+*.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
+*.GeneratedMSBuildEditorConfig.editorconfig
+*.GlobalUsings.g.cs
+*.assets.cache
+*.csproj.AssemblyReference.cache
+*.csproj.CoreCompileInputs.cache
+*.csproj.FileListAbsolute.txt
+*.genruntimeconfig.cache
+*.sourcelink.json
+*.nuget.dgspec.json
+*.nuget.g.props
+*.nuget.g.targets
+*.MvcApplicationPartsAssemblyInfo.cache
+*.deps.json
+*.runtimeconfig.json
+*.dll.config
+*.exe.config
+project.nuget.cache
+MvcTestingAppManifest.json
+refint/
+ref/
+
+# Test coverage and mapping files
+*CoverageSourceRootsMapping*
+*.msCoverageSourceRootsMapping*
+
+# Static web assets
+*.staticwebassets.*
+*.build.ex.cache
+rjsmcshtml.dswa.cache.json
+rjsmrazor.dswa.cache.json
+rpswa.dswa.cache.json
+swae.build.ex.cache
+
+# Runtime and framework reference assemblies
+refs/
+runtimes/
+
+# Localization resource files in build output
+cs/
+de/
+es/
+fr/
+it/
+ja/
+ko/
+pl/
+pt-BR/
+ru/
+tr/
+zh-Hans/
+zh-Hant/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio
+.vs/
+.vscode/
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.svclog
+*.scc
+*.vsix
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.assets.json
+nuget.config.user
+.nuget/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+.directory
+*~
+.fuse_hidden*
+.nfs*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Tests
+TestResults/
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+coverage.opencover.xml
+
+# Configuration (keep development and example configs out of source control)
+# But allow base appsettings.json
+# appsettings.Development.json
+# appsettings.*.json
+# !appsettings.Example.json
+# !appsettings.json
+
+# Environment Files
+*.env
+.env.*
+!.env.example
+
+# Dotnet Tools
+.dotnet/
+.tools/
+.store/
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Tye
+.tye/
+
+# Certificates
+*.pfx
+*.p12

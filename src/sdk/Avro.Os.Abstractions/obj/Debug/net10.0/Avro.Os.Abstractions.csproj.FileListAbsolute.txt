@@ -1,0 +1,12 @@
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/bin/Debug/net10.0/Avro.Os.Abstractions.deps.json
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/bin/Debug/net10.0/Avro.Os.Abstractions.dll
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/bin/Debug/net10.0/Avro.Os.Abstractions.pdb
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.AssemblyInfoInputs.cache
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.AssemblyInfo.cs
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.csproj.CoreCompileInputs.cache
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.sourcelink.json
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.dll
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/refint/Avro.Os.Abstractions.dll
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/Avro.Os.Abstractions.pdb
+/Users/worze/avro/avro-net/src/sdk/Avro.Os.Abstractions/obj/Debug/net10.0/ref/Avro.Os.Abstractions.dll

@@ -1,0 +1,112 @@
+name: SDK Flow
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/sdk/**'
+      - '.github/workflows/sdk-pipeline.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/sdk/**'
+      - '.github/workflows/sdk-pipeline.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Restore dependencies
+      run: dotnet restore src/sdk
+
+    - name: Build
+      run: dotnet build src/sdk --no-restore --configuration Release
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: sdk-build-artifacts
+        path: |
+          src/sdk/**/bin/Release/*.dll
+          src/sdk/**/bin/Release/*.nupkg
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Test
+      run: dotnet test tests --filter "FullyQualifiedName~Avro.Os" --configuration Release --verbosity normal
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: sdk-build-artifacts
+        path: artifacts
+
+    - name: Pack NuGet packages
+      run: dotnet pack src/sdk --configuration Release --output ./nupkg --no-build
+
+    - name: Push NuGet packages
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        
+  validate:
+    needs: deploy
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: 'avro/avro-sdk-validation'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+        
+    - name: Add NuGet source
+      run: dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
+      
+    - name: Validate SDK packages
+      run: |
+        dotnet new console -o ValidationApp
+        cd ValidationApp
+        dotnet add package Avro.Os.Identity
+        dotnet add package Avro.Os.Abstractions
+        dotnet run

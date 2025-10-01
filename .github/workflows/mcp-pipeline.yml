@@ -46,9 +46,11 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Restore dependencies
+      working-directory: ${{ github.workspace }}
       run: dotnet restore
 
     - name: Build
+      working-directory: ${{ github.workspace }}
       run: dotnet build --no-restore --configuration Release
 
     - name: Upload MCP server artifact

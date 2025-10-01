@@ -32,21 +32,15 @@ jobs:
       with:
         dotnet-version: '10.0.x'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-        queries: security-extended,security-and-quality
-        setup-python-dependencies: false
-        config-file: ./.github/codeql/codeql-config.yml
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
-        upload: true
-        checkout_path: ${{ github.workspace }}
-        output: sarif-results
+    # Temporarily skip CodeQL analysis while default setup is enabled
+    - name: Skip CodeQL Analysis
+      run: |
+        echo "CodeQL analysis is currently configured with default setup."
+        echo "Please disable the default setup in repository settings:"
+        echo "1. Go to repository settings"
+        echo "2. Navigate to Security & analysis"
+        echo "3. Find 'Code scanning' section"
+        echo "4. Click 'Configure CodeQL alerts'"
+        echo "5. Disable 'Default' setup"
+        echo "6. Re-enable this workflow after disabling default setup"
+      shell: bash

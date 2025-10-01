@@ -41,9 +41,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
+    - name: Debug Path Info
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "GitHub workspace: ${{ github.workspace }}"
+        echo "Repository root: $GITHUB_WORKSPACE"
+        echo "Listing workspace contents:"
+        ls -la ${{ github.workspace }}
+        echo "Listing src/sdk directory:"
+        ls -la ${{ github.workspace }}/src/sdk
+        echo "Checking for Avro.Os.User project file:"
+        test -f "${{ github.workspace }}/src/sdk/Avro.Os.User/Avro.Os.User.csproj" && echo "Project file exists" || echo "Project file NOT found"
+        find ${{ github.workspace }} -name "Avro.Os.User.csproj"
+
     - name: Restore dependencies
-      working-directory: ${{ github.workspace }}
-      run: dotnet restore
+      run: |
+        dotnet restore ${{ github.workspace }}/Avro.sln
 
     - name: Build
       working-directory: ${{ github.workspace }}

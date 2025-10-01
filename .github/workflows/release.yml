@@ -1,0 +1,196 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+        - auto
+        - patch
+        - minor
+        - major
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    outputs:
+      new_tag: ${{ steps.tag.outputs.new_tag }}
+      new_version: ${{ steps.tag.outputs.new_version }}
+      changelog: ${{ steps.tag.outputs.changelog }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: GitHub Tag
+      id: tag
+      uses: mathieudutour/github-tag-action@v6.2
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # Use conventional commits for automatic versioning
+        default_bump: patch
+        # Custom tag prefix for your project
+        tag_prefix: v
+        # Release branch
+        release_branches: main
+        # Don't create release on pre-release tags
+        pre_release_branches: develop,beta
+        # Custom commit types for version bumping
+        major_string_token: "BREAKING CHANGE,major"
+        minor_string_token: "feat,feature"
+        patch_string_token: "fix,patch,perf,refactor,style,chore,deps"
+        # Create annotated tags
+        create_annotated_tag: true
+        # Custom release name format
+        custom_release_rules: |
+          feat:minor
+          fix:patch  
+          perf:patch
+          refactor:patch
+          deps:patch
+          deps-dev:patch
+          ci:patch
+          docs:patch
+          test:patch
+          chore:patch
+          style:patch
+          BREAKING CHANGE:major
+
+    - name: Setup .NET
+      if: steps.tag.outputs.new_tag
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+        dotnet-quality: 'preview'
+
+    - name: Cache NuGet packages
+      if: steps.tag.outputs.new_tag
+      uses: actions/cache@v4.3.0
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Update package versions
+      if: steps.tag.outputs.new_tag
+      run: |
+        NEW_VERSION="${{ steps.tag.outputs.new_version }}"
+        echo "Updating package versions to $NEW_VERSION"
+        
+        # Update SDK projects
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/sdk/Avro.Os.Abstractions/Avro.Os.Abstractions.csproj
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/sdk/Avro.Os.Identity/Avro.Os.Identity.csproj
+        
+        # Update MCP project
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj
+        
+        echo "Updated versions:"
+        grep -r "PackageVersion" src/ --include="*.csproj" || true
+
+    - name: Build and test
+      if: steps.tag.outputs.new_tag
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        dotnet test --configuration Release --no-build --verbosity normal
+
+    - name: Create release packages
+      if: steps.tag.outputs.new_tag
+      run: |
+        mkdir -p ./release-packages
+        
+        # Pack SDK projects
+        dotnet pack src/sdk/Avro.Os.Abstractions --configuration Release --output ./release-packages --no-build
+        dotnet pack src/sdk/Avro.Os.Identity --configuration Release --output ./release-packages --no-build
+        
+        # Pack MCP project
+        dotnet pack src/mcp/Avro.Mcp.Example --configuration Release --output ./release-packages --no-build
+        
+        # Create release archive
+        tar -czf avro-net-${{ steps.tag.outputs.new_version }}.tar.gz -C ./release-packages .
+        
+        echo "Release packages created:"
+        ls -la ./release-packages/
+        ls -la avro-net-*.tar.gz
+
+    - name: Create GitHub Release
+      if: steps.tag.outputs.new_tag
+      uses: ncipollo/create-release@v1
+      with:
+        tag: ${{ steps.tag.outputs.new_tag }}
+        name: Release ${{ steps.tag.outputs.new_version }}
+        body: |
+          # 🚀 Release ${{ steps.tag.outputs.new_version }}
+          
+          ## 📦 Packages
+          This release includes the following NuGet packages:
+          - `Avro.Os.Abstractions` - OS detection abstractions
+          - `Avro.Os.Identity` - OS detection implementation  
+          - `Avro.Mcp.Example` - MCP server example
+          
+          ## 📋 Changes
+          ${{ steps.tag.outputs.changelog }}
+          
+          ## 📥 Installation
+          ```bash
+          dotnet add package Avro.Os.Abstractions --version ${{ steps.tag.outputs.new_version }}
+          dotnet add package Avro.Os.Identity --version ${{ steps.tag.outputs.new_version }}
+          dotnet add package Avro.Mcp.Example --version ${{ steps.tag.outputs.new_version }}
+          ```
+          
+          ## 🔗 GitHub Package Registry
+          Packages are also available on GitHub Package Registry:
+          ```bash
+          dotnet add package Avro.Os.Abstractions --source https://nuget.pkg.github.com/606/index.json --version ${{ steps.tag.outputs.new_version }}
+          ```
+        artifacts: |
+          ./release-packages/*.nupkg
+          avro-net-${{ steps.tag.outputs.new_version }}.tar.gz
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish to GitHub Package Registry
+      if: steps.tag.outputs.new_tag
+      run: |
+        dotnet nuget add source --username 606 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/606/index.json"
+        dotnet nuget push ./release-packages/*.nupkg --source github --skip-duplicate
+        
+  commit-version-updates:
+    needs: release
+    if: needs.release.outputs.new_tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Update versions and commit
+      run: |
+        NEW_VERSION="${{ needs.release.outputs.new_version }}"
+        
+        # Update package versions
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/sdk/Avro.Os.Abstractions/Avro.Os.Abstractions.csproj
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/sdk/Avro.Os.Identity/Avro.Os.Identity.csproj
+        sed -i "s/<PackageVersion>.*<\/PackageVersion>/<PackageVersion>$NEW_VERSION<\/PackageVersion>/g" src/mcp/Avro.Mcp.Example/Avro.Mcp.Example.csproj
+        
+        # Commit version updates
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add src/*/
+        git commit -m "chore: bump package versions to $NEW_VERSION [skip ci]" || exit 0
+        git push

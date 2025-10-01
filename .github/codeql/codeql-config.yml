@@ -1,0 +1,19 @@
+name: "API Security CodeQL Config"
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+  - uses: security-extended
+
+paths-ignore:
+  - "**/*.Designer.cs"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/packages/**"
+  - "**/.vs/**"
+  - "**/node_modules/**"
+
+paths:
+  - "src/mcp/**"
+  - "src/sdk/**"

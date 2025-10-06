@@ -43,7 +43,7 @@ jobs:
       actions: read
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
@@ -62,7 +62,7 @@ jobs:
       actions: read
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
@@ -114,7 +114,7 @@ jobs:
       security-events: write
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -190,7 +190,7 @@ jobs:
     if: github.event.inputs.scan_type == 'full' || github.event.inputs.scan_type == ''
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4

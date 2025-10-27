@@ -79,7 +79,7 @@ jobs:
         find . -name "*.dll" -not -path "*/obj/*" -not -path "*/bin/Debug/*" > compile_commands.json
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: sdk-build-artifacts
         path: |
@@ -175,14 +175,14 @@ jobs:
         done
 
     - name: Archive NuGet packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: nuget-packages
         path: ./nupkg/*.nupkg
         retention-days: 7
 
     - name: Upload Package Verification
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: nuget-verification
         path: |

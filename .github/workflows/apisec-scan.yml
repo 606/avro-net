@@ -98,7 +98,7 @@ jobs:
         fi
 
     - name: Upload NuGet audit results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: nuget-security-audit
@@ -174,7 +174,7 @@ jobs:
         pkill -f "Avro.Mcp.Example" || true
 
     - name: Upload security scan results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: security-scan-results
@@ -302,7 +302,7 @@ jobs:
         cat security-summary.md
 
     - name: Upload security summary
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: security-scan-summary
         path: security-summary.md

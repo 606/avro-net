@@ -20,7 +20,7 @@
     
     <!-- Test Utility Packages -->
     <PackageVersion Include="FluentAssertions" Version="6.12.1" />
-    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation" Version="12.1.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
   </ItemGroup>
